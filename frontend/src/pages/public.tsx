@@ -175,48 +175,45 @@ export function Landing() {
 
       {/* Lower section: stats strip & footer disclaimer */}
       <div className="landing-lower-section">
-        {/* Sanity-style customer proof & metrics strip */}
+        {/* Regulatory metrics & architecture proof strip */}
         <section className="landing-stats-strip">
           <Link to="/information" className="landing-stat-col group">
             <div className="landing-stat-logo logo-loveholidays">
-              <svg className="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="3.5" />
-                <path d="M12 2.5v2.5M12 19V21.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" />
-              </svg>
-              <span className="brand-name">loveholidays</span>
+              <ShieldAlert className="sun-icon" width="22" height="22" style={{ color: '#FF5B37' }} aria-hidden="true" />
+              <span className="brand-name">Vigilance Gate</span>
             </div>
             <div className="landing-stat-row">
-              <span className="landing-stat-number">-97%</span>
+              <span className="landing-stat-number">50+</span>
               <div className="landing-stat-matrix" aria-hidden="true" />
             </div>
             <div className="landing-stat-caption">
-              TRANSLATION COST WITH AI. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
+              SUSPICION SCORE AUTO-ESCALATES TO VIGILANCE. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
             </div>
           </Link>
 
           <Link to="/information" className="landing-stat-col group">
             <div className="landing-stat-logo logo-tecovas">
-              <span className="brand-name">TECOVAS</span>
+              <span className="brand-name">GEMMA 3</span>
             </div>
             <div className="landing-stat-row">
-              <span className="landing-stat-number">5X</span>
+              <span className="landing-stat-number">27B</span>
               <div className="landing-stat-matrix" aria-hidden="true" />
             </div>
             <div className="landing-stat-caption">
-              FASTER DEVELOPER VELOCITY. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
+              MULTIMODAL VLM & OCR FORENSIC INTAKE. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
             </div>
           </Link>
 
           <Link to="/information" className="landing-stat-col group">
             <div className="landing-stat-logo logo-complex">
-              <span className="brand-name">COMPLEX</span>
+              <span className="brand-name">MAKER · CHECKER</span>
             </div>
             <div className="landing-stat-row">
-              <span className="landing-stat-number">80h</span>
+              <span className="landing-stat-number">100%</span>
               <div className="landing-stat-matrix" aria-hidden="true" />
             </div>
             <div className="landing-stat-caption">
-              EDITORIAL TIME SAVED PER MONTH. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
+              INDEPENDENT BANK ATTESTATION BEFORE RELEASE. <span className="landing-stat-link">READ MORE <span className="arrow">→</span></span>
             </div>
           </Link>
         </section>
@@ -745,18 +742,18 @@ export function Information() {
   const pillars = [
     {
       icon: ShieldCheck,
-      title: 'Four Dedicated Role Domains',
-      desc: 'Focused separation of concerns strictly isolated between Educational Institutions, Verification Officers, the Vigilance Escalation Cell, and System Administrators/Auditors.'
+      title: 'Six Dedicated Application Roles',
+      desc: 'Strict separation of duty enforced server-side across Educational Institutions, Verification Officers, Clearance Cells (PGRC & Vigilance), Approving Authority, Administrators, and Auditors.'
     },
     {
       icon: FileCheck2,
       title: 'Auditable Evidence Trail',
-      desc: 'Every file upload, OCR parse, discrepancy override, and timestamped sign-off is permanently recorded in an append-only audit ledger.'
+      desc: 'Every file upload, OCR parse, discrepancy override, and timestamped sign-off is permanently recorded in an append-only audit ledger with hash chains.'
     },
     {
       icon: GitBranch,
       title: 'Automated Escalation Governance',
-      desc: 'Built-in threshold safeguards automatically intercept suspicious submissions and route them directly to the Vigilance cell for reasoned evaluation.'
+      desc: 'Built-in threshold safeguards automatically intercept suspicious submissions (score ≥ 50) and route them directly to the Vigilance cell for reasoned evaluation.'
     }
   ]
 
