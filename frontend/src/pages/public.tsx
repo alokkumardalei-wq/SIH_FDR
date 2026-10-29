@@ -252,13 +252,21 @@ export function SignIn() {
   })
 
   useEffect(() => {
-    form.setValue('email', PORTALS[portal].demoEmail)
-    form.setValue('password', DEMO_PASSWORD || 'demo@#%1234567890')
+    const fill = () => {
+      form.setValue('email', PORTALS[portal].demoEmail)
+      form.setValue('password', DEMO_PASSWORD || 'demo@#%1234567890')
+    }
+    fill()
+    // Browser password managers autofill after mount and can overwrite the demo values with a stale saved password.
+    const timers = [150, 600, 1500].map(ms => setTimeout(fill, ms))
+    return () => timers.forEach(clearTimeout)
   }, [portal, form])
 
   const mutation = useMutation({
     mutationFn: async (data: Login) => {
-      const user = await post<User>('/auth/login', data)
+      // Demo accounts always use the configured demo password, whatever the browser filled in.
+      const payload = data.email.trim().toLowerCase().endsWith('@demo.local') ? { ...data, password: DEMO_PASSWORD || 'demo@#%1234567890' } : data
+      const user = await post<User>('/auth/login', payload)
       // Each door admits only its own accounts, so an official never lands in the Institute workspace or the reverse.
       if (portalOf(user.role) !== portal) {
         await post('/auth/logout').catch(() => undefined)
@@ -377,7 +385,9 @@ export function SignIn() {
               <label className="field">
                 Email address
                 <input
-                  autoComplete="username"
+                  autoComplete="off"
+                  data-lpignore="true"
+                  data-1p-ignore
                   type="email"
                   placeholder={portal === 'admin' ? 'official@aicte.gov.in' : 'you@institution.edu.in'}
                   {...form.register('email')}
@@ -391,7 +401,9 @@ export function SignIn() {
                 Password
                 <div className="password-input-wrap">
                   <input
-                    autoComplete="current-password"
+                    autoComplete="new-password"
+                    data-lpignore="true"
+                    data-1p-ignore
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
                     {...form.register('password')}
