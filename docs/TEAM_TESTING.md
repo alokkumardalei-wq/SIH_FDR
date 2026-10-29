@@ -66,7 +66,7 @@ Tesseract is only needed locally for scanned supporting documents/OCR tests. Ins
 
 ## 4. Sign in and create the two cases
 
-Default demo password: **`DemoFlow2026!`**. Sign-in shortcuts fill these demo credentials.
+Default demo password: **`demo@#%1234567890`**. Sign-in shortcuts fill these demo credentials.
 
 | Account | Test role |
 | --- | --- |

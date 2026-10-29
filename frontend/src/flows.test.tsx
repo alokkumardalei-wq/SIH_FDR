@@ -41,10 +41,20 @@ describe('critical interface flows', () => {
     mount(<SignIn/>); const user = userEvent.setup()
     expect(within(screen.getByRole('group', { name: 'Portal' })).getAllByRole('button').map(b => b.textContent)).toEqual(['Institute', 'Admin'])
     expect(screen.getByLabelText('Email address')).toHaveValue('institution@demo.local')
-    expect(screen.getByLabelText('Password')).toHaveValue('DemoFlow2026!')
+    const passwordInput = screen.getByLabelText('Password')
+    expect(passwordInput).toHaveValue('demo@#%1234567890')
+    expect(passwordInput).toHaveAttribute('type', 'password')
+
+    // Toggles password visibility with eye icon
+    const toggleBtn = screen.getByRole('button', { name: /Show password/i })
+    await user.click(toggleBtn)
+    expect(passwordInput).toHaveAttribute('type', 'text')
+    await user.click(screen.getByRole('button', { name: /Hide password/i }))
+    expect(passwordInput).toHaveAttribute('type', 'password')
+
     await user.click(screen.getByRole('button', { name: /Admin/i }))
     expect(screen.getByLabelText('Email address')).toHaveValue('admin@demo.local')
-    expect(screen.getByLabelText('Password')).toHaveValue('DemoFlow2026!')
+    expect(screen.getByLabelText('Password')).toHaveValue('demo@#%1234567890')
   })
 
   it('blocks a deposit whose bank maturity precedes its issue date', async () => {

@@ -34,6 +34,15 @@ def hidden_task(code):
 
 
 def task_for(item, user):
+    if not item.get("messages") and item.get("response"):
+        item["messages"] = [{
+            "id": "legacy-" + str(item.get("id", "")),
+            "text": item["response"],
+            "time": item.get("created_at"),
+            "created_at": item.get("created_at"),
+            "side": "left",
+            "sender_role": "institution"
+        }]
     if official(user) or not hidden_task(item["code"]):
         return item
     return {**item, "code": "document_review:" + item["id"], "description": GENERIC_REVIEW, "evidence_source": "document_review", "fields": [],
@@ -63,7 +72,9 @@ def deposit_summary(db, deposit, user):
     institution = db.get(Institution, deposit.institution_id)
     programme = db.get(Programme, deposit.programme_id)
     inst = current_instrument(db, deposit.id)
-    result.update(institution_name=institution.name, institution_code=institution.code, programme=programme.name,
+    college_name = (institution.name if institution and institution.name else (inst.depositor_name.strip() if (inst and inst.depositor_name) else None))
+    result.update(institution_name=college_name, registered_institution_name=institution.name if institution else None,
+                  institution_code=institution.code if institution else None, programme=programme.name if programme else None,
                   instrument=record(inst), days_to_maturity=(inst.maturity_date - date.today()).days if inst else None,
                   open_discrepancies=len(db.scalars(select(Discrepancy.id).where(Discrepancy.deposit_id == deposit.id, Discrepancy.status != "resolved")).all()))
     if official(user):

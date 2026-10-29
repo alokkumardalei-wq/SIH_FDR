@@ -16,7 +16,7 @@ from .workflows import detect, monitor, DEFAULT_WORKFLOW, DEFAULT_ALERTS
 from .bank import MockBankAdapter
 from . import forensics
 
-DEMO_PASSWORD = "DemoFlow2026!"
+DEMO_PASSWORD = "demo@#%1234567890"
 
 
 def receipt_pdf(inst, institution_name):

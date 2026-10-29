@@ -15,7 +15,7 @@ Both independent mock-bank records contain INR 3500000.00.
 | Maturity date | 2034-01-15 | 2034-01-15 |
 | Expected mock-bank finding | Mock confirmed | Mock mismatched: amount |
 
-1. Sign in as institution@demo.local (default password: DemoFlow2026!).
+1. Sign in as institution@demo.local (default password: demo@#%1234567890).
 2. Create two new FDR deposits for Engineering and Technology, using the table.
 3. Upload the corresponding PDF as an Instrument document. Leave optional regulatory-end and renewal dates blank for this extraction/bank test.
 4. Wait for extraction and inspect Evidence comparison. The VLM may misread fields; compare with the original and retain any correction history.

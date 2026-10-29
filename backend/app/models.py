@@ -200,6 +200,7 @@ class Discrepancy(Identity, Base):
     resolved_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     confirmed_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     condition_active: Mapped[bool] = mapped_column(Boolean, default=True, server_default=sa_true())
+    messages: Mapped[list] = mapped_column(JSON, default=list, server_default="[]")
     __table_args__ = (UniqueConstraint("deposit_id", "code"),)
 
 

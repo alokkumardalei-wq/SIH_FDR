@@ -23,6 +23,8 @@ import {
   ShieldAlert,
   ScrollText,
   LockKeyhole,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 import { Brand } from '@/App'
 import { Button } from '@/components/ui/button'
@@ -110,7 +112,7 @@ export function Landing() {
                         ₹35,00,000
                       </div>
                       <div style={{ fontSize: '11px', opacity: 0.85, lineHeight: 1.4 }}>
-                        Meridian Institute of Technology &middot; Fictional record
+                        IIT BOMBAY &middot; Registered record
                       </div>
                     </span>
 
@@ -240,17 +242,18 @@ export function SignIn() {
   const [params, setParams] = useSearchParams()
   const portal: Portal = params.get('portal') === 'admin' ? 'admin' : 'institute'
   const [isSigningIn, setIsSigningIn] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const form = useForm<Login>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: PORTALS[portal].demoEmail,
-      password: DEMO_PASSWORD || 'DemoFlow2026!',
+      password: DEMO_PASSWORD || 'demo@#%1234567890',
     },
   })
 
   useEffect(() => {
     form.setValue('email', PORTALS[portal].demoEmail)
-    form.setValue('password', DEMO_PASSWORD || 'DemoFlow2026!')
+    form.setValue('password', DEMO_PASSWORD || 'demo@#%1234567890')
   }, [portal, form])
 
   const mutation = useMutation({
@@ -275,7 +278,7 @@ export function SignIn() {
   const choose = (next: Portal) => {
     setParams({ portal: next }, { replace: true })
     form.setValue('email', PORTALS[next].demoEmail)
-    form.setValue('password', DEMO_PASSWORD || 'DemoFlow2026!')
+    form.setValue('password', DEMO_PASSWORD || 'demo@#%1234567890')
     mutation.reset()
   }
   const Copy = PORTAL_COPY[portal]
@@ -386,12 +389,22 @@ export function SignIn() {
 
               <label className="field">
                 Password
-                <input
-                  autoComplete="current-password"
-                  type="password"
-                  placeholder="Enter your password"
-                  {...form.register('password')}
-                />
+                <div className="password-input-wrap">
+                  <input
+                    autoComplete="current-password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    {...form.register('password')}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
                 {form.formState.errors.password && (
                   <small className="field-error">{form.formState.errors.password.message}</small>
                 )}

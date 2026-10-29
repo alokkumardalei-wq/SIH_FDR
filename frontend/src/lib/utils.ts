@@ -14,3 +14,9 @@ const VERIFICATION_TEXT: Record<string, string> = {
 }
 export const verificationLabel = (value: string = 'pending') => VERIFICATION_TEXT[value] ?? label(value)
 export const dateLabel = (value?: string | null) => value ? new Date(value).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Not recorded'
+export const dateTimeLabel = (value?: string | null) => {
+  if (!value) return ''
+  const d = new Date(value)
+  if (isNaN(d.getTime())) return ''
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })
+}

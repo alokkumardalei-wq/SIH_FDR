@@ -5,12 +5,12 @@ export type Portal = 'institute' | 'admin'
 export const portalOf = (role: User['role']): Portal => role === 'institution' ? 'institute' : 'admin'
 
 export const PORTALS: Record<Portal, { name: string; short: string; demoEmail: string; demoLabel: string }> = {
-  institute: { name: 'Institute Portal', short: 'Institute', demoEmail: 'institution@demo.local', demoLabel: 'Meridian Institute of Technology' },
+  institute: { name: 'Institute Portal', short: 'Institute', demoEmail: 'institution@demo.local', demoLabel: 'IIT BOMBAY' },
   admin: { name: 'AICTE Admin Command', short: 'Admin', demoEmail: 'admin@demo.local', demoLabel: 'Portal administrator' },
 }
 
 // The public demo password; the seed lets a deployment choose another.
-export const DEMO_PASSWORD = 'DemoFlow2026!'
+export const DEMO_PASSWORD = 'demo@#%1234567890'
 
 // Officials are separate accounts, so maker-checker rules (a second officer, a second administrator, Vigilance
 // clearing its own escalations) still hold. In a demo the header lets one presenter step between them.

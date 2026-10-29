@@ -18,7 +18,7 @@ x-backend: &backend
     COOKIE_SECURE: ${COOKIE_SECURE:-false}
     REQUIRE_MALWARE_SCAN: ${REQUIRE_MALWARE_SCAN:-false}
     CLAMAV_HOST: ${CLAMAV_HOST:-}
-    DEMO_PASSWORD: ${DEMO_PASSWORD:-DemoFlow2026!}
+    DEMO_PASSWORD: ${DEMO_PASSWORD:-demo@#%1234567890}
   restart: unless-stopped
 services:
   postgres:

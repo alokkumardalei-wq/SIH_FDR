@@ -55,19 +55,22 @@ def ocr_page(page):
 
 # A hyphen separates label and value only beside whitespace, so a reference such as AMOUNT-007 is not a label.
 SEP = r"(?:\s*:\s*|\s+-\s*|\s*-\s+)"
+# Support labels followed by colons, hyphens, or a newline in block-formatted receipts
+FIELD_SEP = r"(?:\s*\([^)]*\))?(?:\s*:\s*|\s+-\s*|\s*-\s+|\s*[\r\n]+\s*)"
 # Each field has a specific label and, where useful, a weaker fallback label.
 PATTERNS = {
     "bank": (r"(?:Bank(?: Name)?)" + SEP + r"([^\n]+)", None),
-    "number": (r"(?:FD(?:R)?(?: Number| No\.?)?|Instrument (?:Number|No\.?))" + SEP + r"([A-Za-z0-9/_-]+)",
-               r"Reference" + SEP + r"([A-Za-z0-9/_-]+)"),
-    "depositor_name": (r"Depositor(?: Name)?" + SEP + r"([^\n]+)", r"Institution(?: Name)?" + SEP + r"([^\n]+)"),
+    "number": (r"(?:FD(?:R)?(?: Number| No\.?)?|Instrument (?:Number|No\.?))" + FIELD_SEP + r"([A-Za-z0-9/_-]+)",
+               r"Reference" + FIELD_SEP + r"([A-Za-z0-9/_-]+)"),
+    "depositor_name": (r"(?:Depositor(?:\s*/\s*Institution)?(?: Name)?)" + FIELD_SEP + r"([^\r\n]+)",
+                       r"Institution(?: Name)?" + FIELD_SEP + r"([^\r\n]+)"),
     # Maturity and interest amounts are different figures from the principal.
-    "amount": (r"(?<!Maturity )(?<!Interest )(?:Deposit Amount|Principal(?: Amount| Amt)?|Amount)" + SEP + r"(?:INR|Rs\.?|₹)?[ \t|]*([\d,]+(?:\.\d{1,2})?)(?![\w.,])", None),
-    "issue_date": (r"(?:Issue Date|Date of Issue|Date of Deposit)" + SEP + r"([\d/.-]+)", None),
-    "maturity_date": (r"(?:Maturity Date|Date of Maturity)" + SEP + r"([\d/.-]+)", None),
-    "rate": (r"(?:Rate of Interest|Interest Rate|ROI)" + SEP + r"([\d.]+)\s*%", None),
-    "maturity_value": (r"Maturity (?:Value|Amount)" + SEP + r"(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d{1,2})?)", None),
-    "lien": (r"(?:Lien(?: Marked)?(?: (?:in )?Favou?r of)?|Pledged (?:to|in favou?r of))" + SEP + r"([^\n]+)", None),
+    "amount": (r"(?<!Maturity )(?<!Interest )(?:Deposit Amount|Principal(?: Deposit)?(?: Amount| Amt)?|Amount)" + FIELD_SEP + r"(?:INR|Rs\.?|₹)?[ \t|]*([\d,]+(?:\.\d{1,2})?)(?![\w.,])", None),
+    "issue_date": (r"(?:Issue Date|Date of Issue|Date of Deposit)" + FIELD_SEP + r"([\d/.-]+)", None),
+    "maturity_date": (r"(?:Maturity Date|Date of Maturity)" + FIELD_SEP + r"([\d/.-]+)", None),
+    "rate": (r"(?:Rate of Interest|Interest Rate|ROI)" + FIELD_SEP + r"([\d.]+)\s*%", None),
+    "maturity_value": (r"Maturity (?:Value|Amount)" + FIELD_SEP + r"(?:INR|Rs\.?|₹)?\s*([\d,]+(?:\.\d{1,2})?)", None),
+    "lien": (r"(?:Lien(?: Marked)?(?: (?:in )?Favou?r of)?|Pledged (?:to|in favou?r of))" + FIELD_SEP + r"([^\r\n]+)", None),
 }
 
 
@@ -151,6 +154,14 @@ def candidates(text):
             if value not in values:
                 values.append(value)
             found['amount'] = (values, fallback)
+    # Bank header fallback if bank not explicitly labelled with 'Bank:'
+    if 'bank' not in found:
+        for line in text.splitlines():
+            line_str = line.strip()
+            if re.match(r'^[A-Za-z0-9&., ]+\b(?:BANK|LIMITED|LTD)\b$', line_str):
+                if not re.search(r'\b(STAMP|DATA|DATASET|SIMULATED|TESTING|FICTIONAL)\b', line_str, re.I):
+                    found['bank'] = ([line_str], True)
+                    break
     return found
 
 

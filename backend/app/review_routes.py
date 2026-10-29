@@ -1,3 +1,4 @@
+import secrets
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -96,16 +97,37 @@ def clarification(deposit_id: str, body: schemas.Note, user=Depends(current_user
 
 
 @router.post("/discrepancies/{case_id}/respond")
-def respond(case_id: str, body: schemas.Note, user=Depends(current_user), db=Depends(get_db)):
+def respond(case_id: str, body: schemas.DiscrepancyResponse, user=Depends(current_user), db=Depends(get_db)):
     item = db.get(Discrepancy, case_id)
     if not item:
         raise HTTPException(404, "Discrepancy not found")
     deposit = get_deposit(db, user, item.deposit_id, lock=True)
-    require_owner(user, deposit)
+    if user.role == "institution":
+        require_owner(user, deposit)
+    else:
+        require_roles(user, "admin", "verification", "authority", "vigilance", "clearance")
     if item.status in ("resolved", "resolution_proposed"):
         raise HTTPException(409, "This discrepancy is already resolved or awaiting confirmation of its resolution")
-    item.response, item.status = body.notes, "responded"
-    audit(db, user, "clarification_responded", deposit.id, deposit.institution_id, after={"discrepancy_id": item.id, "notes": body.notes})
+    
+    side = body.side or ("left" if user.role == "institution" else "right")
+    now_iso = utcnow().isoformat()
+    new_message = {
+        "id": secrets.token_hex(8),
+        "text": body.notes,
+        "time": now_iso,
+        "created_at": now_iso,
+        "side": side,
+        "sender_id": user.id,
+        "sender_name": user.name,
+        "sender_role": user.role,
+    }
+    existing_messages = list(item.messages or [])
+    existing_messages.append(new_message)
+    item.messages = existing_messages
+    item.response = body.notes
+    item.status = "responded"
+    audit(db, user, "clarification_responded", deposit.id, deposit.institution_id,
+          after={"discrepancy_id": item.id, "notes": body.notes, "sender_role": user.role, "side": side})
     db.commit()
     return task_for(record(item), user)
 

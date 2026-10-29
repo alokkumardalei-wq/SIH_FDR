@@ -153,7 +153,7 @@ If the project is already running, stop its launcher with **Ctrl+C** before prep
 
 ## 7. Test a receipt and the complete workflow
 
-Follow [TEAM_TESTING.md](TEAM_TESTING.md) for demo credentials, exact form values, both PDFs and the role-by-role workflow. All default demo accounts use `DemoFlow2026!` unless the installation chose another seed password.
+Follow [TEAM_TESTING.md](TEAM_TESTING.md) for demo credentials, exact form values, both PDFs and the role-by-role workflow. All default demo accounts use `demo@#%1234567890` unless the installation chose another seed password.
 
 1. Sign in as `institution@demo.local` and create separate cases for `TEST-VALID-001` and `TEST-ALTERED-001`.
 2. Select document category **Instrument**, then upload the matching PDF from `demo-data/receipt-tests/` once.

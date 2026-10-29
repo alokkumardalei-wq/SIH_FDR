@@ -77,6 +77,11 @@ class Note(StrictModel):
     notes: str = Field(min_length=5, max_length=4000)
 
 
+class DiscrepancyResponse(StrictModel):
+    notes: str = Field(min_length=1, max_length=4000)
+    side: Literal["left", "right"] | None = None
+
+
 class Correction(StrictModel):
     field: Literal["bank", "number", "depositor_name", "amount", "issue_date", "maturity_date"]
     corrected_value: str = Field(min_length=1, max_length=200)

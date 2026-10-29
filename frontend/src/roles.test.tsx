@@ -64,11 +64,11 @@ describe('Role-based workflows and access control', () => {
       const user = userEvent.setup()
 
       expect(screen.getByLabelText('Email address')).toHaveValue('institution@demo.local')
-      expect(screen.getByLabelText('Password')).toHaveValue('DemoFlow2026!')
+      expect(screen.getByLabelText('Password')).toHaveValue('demo@#%1234567890')
 
       await user.click(screen.getByRole('button', { name: /Admin/i }))
       expect(screen.getByLabelText('Email address')).toHaveValue('admin@demo.local')
-      expect(screen.getByLabelText('Password')).toHaveValue('DemoFlow2026!')
+      expect(screen.getByLabelText('Password')).toHaveValue('demo@#%1234567890')
     })
   })
 

@@ -53,7 +53,7 @@ npm --prefix frontend ci
 python3 scripts/dev.py
 ```
 
-Open **http://localhost:5173**. Use `institution@demo.local` / `DemoFlow2026!` for the default demo. Follow the [two-receipt and role-by-role test guide](docs/TEAM_TESTING.md). Use Python 3.12 and Node.js 22; Windows users can follow the WSL paths in the complete guide. The private repository requires collaborator access.
+Open **http://localhost:5173**. Use `institution@demo.local` / `demo@#%1234567890` for the default demo. Follow the [two-receipt and role-by-role test guide](docs/TEAM_TESTING.md). Use Python 3.12 and Node.js 22; Windows users can follow the WSL paths in the complete guide. The private repository requires collaborator access.
 
 To run **your own Colab worker**, obtain the complete saved adapter export in Drive and upload [Gemma3_27B_Review_and_Serve.ipynb](training/gemma3_27b/Gemma3_27B_Review_and_Serve.ipynb) to Colab. Use the recorded A100 80 GB class, configure `ROOT`, leave `RUN_EVALUATION=False`, and run setup, model loading, inference and the API smoke test in order. Add `NGROK_AUTHTOKEN` and `NGROK_DOMAIN` in Colab Secrets, then run the server cell with `START_WORKER=True`. It downloads the connection file used above. [Detailed instructions and recovery steps](docs/VLM_SETUP.md#4-run-the-saved-model-in-colab).
 
@@ -127,7 +127,7 @@ Run backend commands inside `backend/`, so the database, private key file and st
 
 **There are two sign-in doors.** The sign-in page has an **Institute** and an **Admin** toggle: institutions use the Institute Portal, and every AICTE official uses the AICTE Admin Command portal. Each door admits only its own accounts. Inside the Admin portal, a demo-only **Acting as** menu in the header signs you in as another official (second administrator, verification officers, PGRC, Vigilance, authority, auditor), so one presenter can walk a case through every stage. These remain separate accounts on the server, so maker-checker rules still hold: a second officer confirms high-severity resolutions, a second administrator approves rule changes, and only Vigilance clears escalations. The menu appears only when the backend reports demo mode.
 
-The sign-in page provides one-click shortcuts for the fictional demo accounts. The public, local-demo password is **`DemoFlow2026!`**. This is a fixture password, not a private deployment credential. Set `DEMO_PASSWORD` before the first seed to choose another value; reseeding does not reset existing accounts. If changed, enter the selected password manually instead of relying on the demo shortcut.
+The sign-in page provides one-click shortcuts for the fictional demo accounts. The public, local-demo password is **`demo@#%1234567890`**. This is a fixture password, not a private deployment credential. Set `DEMO_PASSWORD` before the first seed to choose another value; reseeding does not reset existing accounts. If changed, enter the selected password manually instead of relying on the demo shortcut.
 
 | Account | Purpose |
 | --- | --- |
